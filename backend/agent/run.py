@@ -308,6 +308,16 @@ async def run_agent(
             # Stop execution immediately on any error
             break
 
+def start_agent():
+    import asyncio
+    from agent.api import app  # FastAPI app
+    import uvicorn
+
+    print("✅ Suna Agent launching via Uvicorn...")
+
+    # Launch FastAPI backend
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
 # # TESTING
 
