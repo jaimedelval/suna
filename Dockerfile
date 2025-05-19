@@ -1,21 +1,21 @@
 # Use official Python image
 FROM python:3.11-slim
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy the backend directory into the container
-COPY backend /app/backend
-
-# Install dependencies
-COPY backend/requirements.txt .
+# Copy backend requirements and install
+COPY backend/requirements.txt ./requirements.txt
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Expose the FastAPI port (used by agent.api)
-EXPOSE 8000
+# Copy backend code
+COPY backend/ ./backend/
 
-# Set environment variables
+# Set environment variable to prevent buffering
 ENV PYTHONUNBUFFERED=1
 
-# Run the agent backend
+# ➕ Add backend to Python path so `agent` can be found
+ENV PYTHONPATH="${PYTHONPATH}:/app/backend"
+
+# Run the agent
 CMD ["python", "backend/agent/run.py"]
