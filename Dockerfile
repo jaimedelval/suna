@@ -1,21 +1,21 @@
 # Use official Python image
 FROM python:3.11-slim
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy backend requirements and install them
-COPY backend/requirements.txt ./requirements.txt
+# Copy the backend directory into the container
+COPY backend /app/backend
+
+# Install dependencies
+COPY backend/requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Copy full backend app
-COPY backend/ .
-
-# Expose FastAPI port (if needed)
+# Expose the FastAPI port (used by agent.api)
 EXPOSE 8000
 
-# Set environment variable
+# Set environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Run the Suna agent via run.py
-CMD ["python", "run.py"]
+# Run the agent backend
+CMD ["python", "backend/agent/run.py"]
