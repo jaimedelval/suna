@@ -1,21 +1,24 @@
-# ✅ Base image must come first!
+# Base image
 FROM python:3.11-slim
 
-# ✅ Set working directory
+# Set working directory
 WORKDIR /app
 
-# ✅ Copy backend code
+# Copy backend code
 COPY backend/ ./backend/
 
-# ✅ Copy requirements and install
+# Install dependencies
 COPY backend/requirements.txt ./requirements.txt
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# ✅ Set unbuffered output
+# Add backend to Python path so 'agent' can be imported
+ENV PYTHONPATH="${PYTHONPATH}:/app/backend"
+
+# Unbuffered logs
 ENV PYTHONUNBUFFERED=1
 
-# ✅ Expose the port (important for Railway)
+# Expose FastAPI port
 EXPOSE 8000
 
-# ✅ Set the default command to run your app
+# Run the agent
 CMD ["python", "backend/agent/run.py"]
