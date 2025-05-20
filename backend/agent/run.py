@@ -318,7 +318,10 @@ def start_agent():
     # Launch FastAPI backend
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
-
+# 🟢 Add this to actually run the server on container start
+if __name__ == "__main__":
+    start_agent()
+    
 # # TESTING
 
 # async def test_agent():
