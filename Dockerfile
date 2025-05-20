@@ -1,21 +1,18 @@
-# Use official Python image
-FROM python:3.11-slim
-
 # Set working directory
 WORKDIR /app
-
-# Copy backend requirements and install
-COPY backend/requirements.txt ./requirements.txt
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy backend code
 COPY backend/ ./backend/
 
-# Set environment variable to prevent buffering
-ENV PYTHONUNBUFFERED=1
+# Install dependencies
+COPY backend/requirements.txt ./requirements.txt
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# ➕ Add backend to Python path so `agent` can be found
+# Expose port 8000 for Railway
+EXPOSE 8000
+
+# Optional: Add backend to PYTHONPATH
 ENV PYTHONPATH="${PYTHONPATH}:/app/backend"
 
-# Run the agent
+# Start web server — update to your actual framework and file
 CMD ["python", "backend/agent/run.py"]
