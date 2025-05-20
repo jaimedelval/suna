@@ -1,18 +1,21 @@
-# Set working directory
+# ✅ Base image must come first!
+FROM python:3.11-slim
+
+# ✅ Set working directory
 WORKDIR /app
 
-# Copy backend code
+# ✅ Copy backend code
 COPY backend/ ./backend/
 
-# Install dependencies
+# ✅ Copy requirements and install
 COPY backend/requirements.txt ./requirements.txt
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Expose port 8000 for Railway
+# ✅ Set unbuffered output
+ENV PYTHONUNBUFFERED=1
+
+# ✅ Expose the port (important for Railway)
 EXPOSE 8000
 
-# Optional: Add backend to PYTHONPATH
-ENV PYTHONPATH="${PYTHONPATH}:/app/backend"
-
-# Start web server — update to your actual framework and file
+# ✅ Set the default command to run your app
 CMD ["python", "backend/agent/run.py"]
