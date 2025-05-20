@@ -1,3 +1,4 @@
+from fastapi import FastAPI
 from fastapi import APIRouter, HTTPException, Depends, Request, Body, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
 import asyncio
@@ -782,3 +783,6 @@ async def initiate_agent_with_files(
         logger.error(f"Error in agent initiation: {str(e)}\n{traceback.format_exc()}")
         # TODO: Clean up created project/thread if initiation fails mid-way
         raise HTTPException(status_code=500, detail=f"Failed to initiate agent session: {str(e)}")
+
+app = FastAPI()
+app.include_router(router)
