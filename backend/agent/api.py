@@ -786,3 +786,7 @@ async def initiate_agent_with_files(
 
 app = FastAPI()
 app.include_router(router)
+
+@app.get("/")
+def read_root():
+    return {"message": "Suna Agent is running"}
