@@ -307,6 +307,19 @@ async def run_agent(
             # Stop execution immediately on any error
             break
 
+            def start_agent():
+    from agent.api import app  # FastAPI app
+    import uvicorn
+
+    print("✅ Suna Agent launching via Uvicorn...")
+
+    # Launch FastAPI backend
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# 🟢 Add this to actually run the server on container start
+if __name__ == "__main__":
+    start_agent()
+    
 
 # # TESTING
 
