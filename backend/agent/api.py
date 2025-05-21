@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi import APIRouter, HTTPException, Depends, Request, Body, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import json
 import traceback
@@ -785,8 +786,14 @@ async def initiate_agent_with_files(
         raise HTTPException(status_code=500, detail=f"Failed to initiate agent session: {str(e)}")
 
 app = FastAPI()
-app.include_router(router)
 
-@app.get("/")
-def read_root():
-    return {"message": "Suna Agent is running"}
+# ✅ Add CORS middleware before including the router
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://notfinancialadvise.com"],  # or ["*"] for debugging
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(router)
