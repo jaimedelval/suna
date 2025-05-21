@@ -247,7 +247,7 @@ async def get_agent_run_with_access_check(client, agent_run_id: str, user_id: st
 async def start_agent(
     thread_id: str,
     body: AgentStartRequest = Body(...),
-    user_id: str = Depends(get_current_user_id_from_jwt)
+    user_id: str = "dev-user"
 ):
     """Start an agent for a specific thread in the background."""
     global instance_id # Ensure instance_id is accessible
@@ -346,7 +346,7 @@ async def stop_agent(agent_run_id: str, user_id: str = "dev-user"): # TEMP: Hard
     return {"status": "stopped"}
 
 @router.get("/thread/{thread_id}/agent-runs")
-async def get_agent_runs(thread_id: str, user_id: str = Depends(get_current_user_id_from_jwt)):
+async def get_agent_runs(thread_id: str, user_id: str = "dev-user"):
     """Get all agent runs for a thread."""
     logger.info(f"Fetching agent runs for thread: {thread_id}")
     client = await db.client
@@ -356,7 +356,7 @@ async def get_agent_runs(thread_id: str, user_id: str = Depends(get_current_user
     return {"agent_runs": agent_runs.data}
 
 @router.get("/agent-run/{agent_run_id}")
-async def get_agent_run(agent_run_id: str, user_id: str = Depends(get_current_user_id_from_jwt)):
+async def get_agent_run(agent_run_id: str, user_id: str = "dev-user"):
     """Get agent run status and responses."""
     logger.info(f"Fetching agent run details: {agent_run_id}")
     client = await db.client
@@ -605,7 +605,7 @@ async def initiate_agent_with_files(
     stream: Optional[bool] = Form(True),
     enable_context_manager: Optional[bool] = Form(False),
     files: List[UploadFile] = File(default=[]),
-    user_id: str = Depends(get_current_user_id_from_jwt)
+    user_id: str = "dev-user"
 ):
     """Initiate a new agent session with optional file attachments."""
     global instance_id # Ensure instance_id is accessible
