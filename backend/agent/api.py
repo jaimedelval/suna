@@ -337,7 +337,7 @@ async def start_agent(
     return {"agent_run_id": agent_run_id, "status": "running"}
 
 @router.post("/agent-run/{agent_run_id}/stop")
-async def stop_agent(agent_run_id: str, user_id: str = Depends(get_current_user_id_from_jwt)):
+async def stop_agent(agent_run_id: str, user_id: str = "dev-user"): # TEMP: Hardcoded user_id for testing. Replace with "Depends(get_current_user_id_from_jwt)" when auth is ready.
     """Stop a running agent."""
     logger.info(f"Received request to stop agent run: {agent_run_id}")
     client = await db.client
